@@ -1,0 +1,39 @@
+.bg-image{
+    background-image: url(https://cdn2.hubspot.net/hubfs/2174253/disneyland-here.png);
+
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  
+    /* Full height */
+    height: 100vh; 
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 0;
+
+    grid-row: 1;
+    grid-column: 1;
+}
+.page{
+    display: grid;
+}
+.button-area{
+    z-index: 1;
+    display: grid;
+    grid-row: 1;
+    grid-column: 1;
+    justify-content: center;
+}
+.button{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    justify-self: center;
+    align-self: center;
+    font-size: 5vw;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    
+}
