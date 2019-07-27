@@ -51,7 +51,6 @@ if __name__ == "__main__":
             routingApi = create_clients()
             r = create_redis()
             client_path = update_path()
-            print(client_path)
             response = routingApi.truck_route(client_path[0],
                                               client_path[1],
                                               [herepy.RouteMode.truck, herepy.RouteMode.fastest, herepy.RouteMode.traffic_default])
