@@ -1,0 +1,2 @@
+APP_ID = "fx1LPieiEyOPBkSpUwYO"
+APP_CODE = "c8rCqh0ooTCImrQ3pJ94SQ"

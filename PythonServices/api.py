@@ -6,8 +6,9 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
-def convert_address_to_coor():
-    pass
+def convert_address_to_coor(address):
+    # resp = geocoderApi.free_form("красный октябрь")
+    return herepy.geocoder_api.GeocoderApi(APP_ID, APP_CODE).free_form(address)
 
 
 def get_shortest_path(coordinates, client):
