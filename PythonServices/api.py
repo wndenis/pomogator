@@ -5,30 +5,35 @@ import redis
 import logging
 from logging.handlers import RotatingFileHandler
 
+
 def convert_address_to_coor():
     pass
 
+
 def get_shortest_path(coordinates, client):
-    return client.truck_route(coordinates,[herepy.RouteMode.truck, herepy.RouteMode.fastest])
+    return client.truck_route(coordinates, [herepy.RouteMode.truck, herepy.RouteMode.fastest])
+
 
 def update_path():
     return [[52.52282, 13.37011],
-                                              [52.50341, 13.44429]]
+            [52.50341, 13.44429]]
+
 
 def create_clients():
     logger.info('Client created')
     return herepy.RoutingApi(APP_ID, APP_CODE)
 
+
 def init_logger(logger_name, max_volume_of_log_file_megabytes=100):
-    logger = logging.getLogger(logger_name) # Create a log with the same name as the script that created it
+    logger = logging.getLogger(logger_name)  # Create a log with the same name as the script that created it
     logger.setLevel('DEBUG')
     filehandler_dbg = RotatingFileHandler(logger_name + '.log',  mode='a', maxBytes=max_volume_of_log_file_megabytes * 1024 * 1024,
                                           backupCount=2, encoding=None, delay=0) # Create handlers and set their logging level
     filehandler_dbg.setLevel('DEBUG')
     streamformatter = logging.Formatter(fmt='[%(asctime)s]:%(levelname)s:%(threadName)s:\t%(message)s',
                                         datefmt='%Y-%m-%d %H:%M:%S') # We only want to see certain parts of the message
-    filehandler_dbg.setFormatter(streamformatter) # Apply formatters to handlers
-    logger.addHandler(filehandler_dbg) # Add handlers to logger
+    filehandler_dbg.setFormatter(streamformatter)  # Apply formatters to handlers
+    logger.addHandler(filehandler_dbg)  # Add handlers to logger
 
     logger.info('New session started')
 
