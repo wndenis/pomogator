@@ -7,27 +7,41 @@
     android:orientation="vertical" >
 
     <!-- UI element declaration for "Get Directions" button -->
-    <android.widget.Button
-        android:id="@+id/directionsbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_button_getdirections"
-        android:onClick="getDirections" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        tools:context=".RoutingActivity" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/hello_world"
+                tools:context=".RoutingActivity" />
+
+            <android.widget.Button
+                android:id="@+id/directionsbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="getDirections"
+                android:text="@string/label_button_getdirections" />
+        </LinearLayout>
+
+    </FrameLayout>
 
     <fragment
         android:id="@+id/mapfragment"
+        class="com.here.android.mpa.mapping.SupportMapFragment"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        class="com.here.android.mpa.mapping.SupportMapFragment" />
+        android:layout_height="fill_parent" />
 
 </LinearLayout>
 
