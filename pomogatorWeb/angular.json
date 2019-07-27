@@ -29,7 +29,14 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "https://js.api.here.com/v3/3.1/mapsjs-mapevents.js",
+              "https://js.api.here.com/v3/3.1/mapsjs-ui.js",
+              "https://js.api.here.com/v3/3.1/mapsjs-service.js",
+              "https://js.api.here.com/v3/3.1/mapsjs-core.js",
+              "/environments/credentials.js",
+              "/libs/GetMouseClick.js"
+            ]
           },
           "configurations": {
             "production": {
