@@ -8,12 +8,24 @@
 
 package com.mapstutorial.simplerouting;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import android.Manifest;
 import android.app.Activity;
+import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -36,6 +48,8 @@ import com.here.android.mpa.routing.RouteManager;
 import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
 import com.here.android.mpa.routing.RouteResult;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class RoutingActivity extends FragmentActivity {
     private static final String LOG_TAG = RoutingActivity.class.getSimpleName();
@@ -148,40 +162,65 @@ public class RoutingActivity extends FragmentActivity {
         return true;
     }
 
+
+
     // Functionality for taps of the "Get Directions" button
     public void getDirections(View view) {
+
+        NetworkService.getInstance()
+                .getJSONApi()
+                .getPostWithID(1)
+                .enqueue(new Callback<Post>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
+                        Post post = response.body();
+                        textViewResult.setText(post.getBody());
+//                        textView.append(post.getId() + "\n");
+//                        textView.append(post.getUserId() + "\n");
+//                        textView.append(post.getTitle() + "\n");
+//                        textView.append(post.getBody() + "\n");
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Post> call, @NonNull Throwable t) {
+                        textViewResult.setText("ERROR");
+//                        textView.append("Error occurred while getting request!");
+                        t.printStackTrace();
+                    }
+                });
+
         // 1. clear previous results
-        textViewResult.setText("");
-        if (map != null && mapRoute != null) {
-            map.removeMapObject(mapRoute);
-            mapRoute = null;
-        }
-
-        // 2. Initialize RouteManager
-        RouteManager routeManager = new RouteManager();
-
-        // 3. Select routing options
-        RoutePlan routePlan = new RoutePlan();
-
-        RouteOptions routeOptions = new RouteOptions();
-        routeOptions.setTransportMode(RouteOptions.TransportMode.CAR);
-        routeOptions.setRouteType(RouteOptions.Type.FASTEST);
-        routePlan.setRouteOptions(routeOptions);
-
-        // 4. Select Waypoints for your routes
-        // START: Nokia, Burnaby
-        routePlan.addWaypoint(new GeoCoordinate(49.1966286, -123.0053635));
-
-        // END: Airport, YVR
-        routePlan.addWaypoint(new GeoCoordinate(49.1947289, -123.1762924));
-
-        // 5. Retrieve Routing information via RouteManagerEventListener
-        RouteManager.Error error = routeManager.calculateRoute(routePlan, routeManagerListener);
-        if (error != RouteManager.Error.NONE) {
-            Toast.makeText(getApplicationContext(),
-                    "Route calculation failed with: " + error.toString(), Toast.LENGTH_SHORT)
-                    .show();
-        }
+//        textViewResult.setText("");
+//        if (map != null && mapRoute != null) {
+//            map.removeMapObject(mapRoute);
+//            mapRoute = null;
+//        }
+//
+//        // 2. Initialize RouteManager
+//        RouteManager routeManager = new RouteManager();
+//
+//        // 3. Select routing options
+//        RoutePlan routePlan = new RoutePlan();
+//
+//        RouteOptions routeOptions = new RouteOptions();
+//        routeOptions.setTransportMode(RouteOptions.TransportMode.CAR);
+//        routeOptions.setRouteType(RouteOptions.Type.FASTEST);
+//        routePlan.setRouteOptions(routeOptions);
+//
+//        // 4. Select Waypoints for your routes
+//        // START: Nokia, Burnaby
+//        routePlan.addWaypoint(new GeoCoordinate(49.1966286, -123.0053635));
+//
+//        // END: Airport, YVR
+//        routePlan.addWaypoint(new GeoCoordinate(49.1947289, -123.1762924));
+//
+//        // 5. Retrieve Routing information via RouteManagerEventListener
+//        RouteManager.Error error = routeManager.calculateRoute(routePlan, routeManagerListener);
+//        if (error != RouteManager.Error.NONE) {
+//            Toast.makeText(getApplicationContext(),
+//                    "Route calculation failed with: " + error.toString(), Toast.LENGTH_SHORT)
+//                    .show();
+//        }
     }
 
     private RouteManager.Listener routeManagerListener = new RouteManager.Listener() {
