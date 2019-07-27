@@ -6,18 +6,20 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/logineditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center"
+        android:hint="Логин"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:singleLine="true" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/loginbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:onClick="Login"
+        android:text="Войти" />
 
 </LinearLayout>
