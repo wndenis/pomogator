@@ -1,3 +1,6 @@
+import datetime
+
+import pytz
 import requests
 from constants import *
 import herepy
@@ -55,7 +58,7 @@ def return_path(paths):
             keys.append('end')
         else:
             keys.append('destination' + str(i))
-    values.append('fastest;truck')
+    values.append('fastest;truck;traffic:enabled')
     keys.append('mode')
     keys.append('app_id')
     values.append('7FL7O7fEGIJ1XPtoy9Fk')
@@ -63,6 +66,8 @@ def return_path(paths):
     values.append('7KnIQ-A-QX2FULgcERVvqA')
     keys.append('maxSpeed')
     values.append('80kph')
+    keys.append('departure')
+    values.append(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).replace(' ','T')+'+03')
 
     payload = dict(zip(keys, values))
     r = requests.get('https://wse.api.here.com/2/findsequence.json', params=payload)
