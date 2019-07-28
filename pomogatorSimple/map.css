@@ -4,8 +4,13 @@
     height: 85vh;
     background: grey;
 }
-#page-header{
+.page-header{
     display: grid;
+    text-align: center;
+}
+.modal-header{
+    display: grid;
+    text-align: center;
 }
 input{
     justify-self: center;
@@ -15,4 +20,11 @@ input{
 #panel {
     width: 100%;
     height: 400px;
+}
+.list-area{
+    height: 150px;
+    width: 150px;
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: 0; /* Положение от нижнего края */
+    right: 95%; /* Положение от правого края */
 }

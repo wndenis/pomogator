@@ -25,11 +25,19 @@
   </head>
   <body id="markers-on-the-map">
     <div class="page-header">
+      <h4>Введите адрес для доставки</h4>
       <input class="input form-control" type="text" id="auto-complete" style="margin-left:5%; margin-right:5%; min-width:90%" 
        onkeyup="return autoCompleteListener(this, event);">
       <select name="" class="custom-select" id="select" onchange="geocode(this.value)">
       </select>
     </div>
+    <div id="list-area-id" class="list-area">
+      <div class="list-group" data-spy="scroll" data-target="#list-area-id" data-offset="0">
+          <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+          <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+      </div>
+    </div>
+
     <div id="map"></div>
 
     <script type="text/javascript" src='map.js'></script>
@@ -40,7 +48,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Дата доставки посылки</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -54,7 +62,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary" onclick="sendMarkerDataToBack()">Send Data</button>
         </div>
       </div>
     </div>

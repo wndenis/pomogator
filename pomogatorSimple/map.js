@@ -6,12 +6,17 @@
  * @param {String} html             Data associated with the marker
  */
 
- 
+var coordinates = {
+  'lat':"string",
+  'lng':"string"
+}
+
 function addMarkerToGroup(group,behavior,lat, lng, content) {
   var marker = new H.map.Marker({lat:lat, lng:lng}, {
     // mark the object as volatile for the smooth dragging
     volatility: true
   });
+  //debugger;
   // Ensure that the marker can receive drag events
   marker.draggable = true;
   // add custom data to the marker
@@ -37,6 +42,8 @@ function addMarkerToGroup(group,behavior,lat, lng, content) {
       var coordLng = target.b.lng;
       
       marker.setGeometry({lat:coordLat,lng:coordLng})
+      coordinates = {lat:coordLat,lng:coordLng};
+
   // Get an instance of the geocoding service:
   var geocoder = platform.getGeocodingService();
       geocoder.reverseGeocode(
@@ -74,10 +81,14 @@ function addMarkerToGroup(group,behavior,lat, lng, content) {
   }, false);
 }
 
+
+
 function addMarker(map,lat,lng) {
-  var group = new H.map.Group();
+  group = new H.map.Group();
 
   map.addObject(group);
+
+
 
   // Create the parameters for the reverse geocoding request:
   var reverseGeocodingParameters = {
@@ -113,6 +124,7 @@ function addMarker(map,lat,lng) {
         },
         onSuccessShowInfo,
         function(e) { alert(e); });
+        coordinates = evt.target.getGeometry();
     });
 
   function onSuccessGetMarkerContent(result) {
@@ -209,5 +221,29 @@ function addMarker(map,lat,lng) {
 
 function onError(error) {
   alert('Can\'t reach the remote server');
-}                 
+}    
+
+function sendMarkerDataToBack(){
+  console.log(coordinates);
+  var link = "http://10.30.21.152:5000/api"
+  var xhr = new XMLHttpRequest();
+
+  var json = JSON.stringify({
+  "latitude": coordinates.lat,
+  "longitude": coordinates.lng
+  });
+
+  xhr.open("POST", `${link}/order`, true)
+  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+  xhr.onreadystatechange = function () {
+    if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        console.log(xhr.responseText);
+    };
+};
+
+  // Отсылаем объект в формате JSON и с Content-Type application/json
+  // Сервер должен уметь такой Content-Type принимать и раскодировать
+  xhr.send(json);
+}
               
