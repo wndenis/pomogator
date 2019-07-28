@@ -16,7 +16,7 @@ def read_all():
     return data
 
 
-def read_one(driver_id, coords):
+def read_one(driver_id, lat, lng):
 
     order = Driver.query.filter(Driver.driver_id == driver_id).one_or_none()
 
@@ -29,8 +29,8 @@ def read_one(driver_id, coords):
             order_plan_schema = OrderPlanSchema()
             data = order_plan_schema.dump(search_for_path).data
             data = literal_eval(data['paths'])
-            coords = literal_eval(coords)
-            coords = literal_eval(coords)
+            coords = [float(lat), float(lng)]
+            # coords = literal_eval(coords)
             data.insert(0, coords)
             data.append(coords)
             data = return_path(data)

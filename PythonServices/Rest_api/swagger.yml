@@ -459,7 +459,12 @@ paths:
           description: Id to get
           type: integer
           required: True
-        - name: coords
+        - name: lat
+          in: query
+          description: Id to get
+          type: string
+          required: True
+        - name: lng
           in: query
           description: Id to get
           type: string
