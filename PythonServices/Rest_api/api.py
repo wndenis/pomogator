@@ -42,11 +42,27 @@ def init_logger(logger_name, max_volume_of_log_file_megabytes=100):
 def create_redis():
     return redis.Redis(host='localhost', port=6379, socket_timeout=5, socket_connect_timeout=5)
 
-def return_path(route):
-    routingApi = create_clients()
-    response = routingApi.truck_route(route[0],
-                                      route[1],
-                                      [herepy.RouteMode.truck, herepy.RouteMode.fastest,
-                                       herepy.RouteMode.traffic_default])
+def return_path(paths):
+    keys = []
+    values = []
+    print(paths[0])
+    for i, x in enumerate(paths):
+        print(x)
+        values.append(','.join(map(str, x)) )
+        if i == 0:
+            keys.append('start')
+        elif i == len(values) - 1:
+            keys.append('end')
+        else:
+            keys.append('destination' + str(i))
+    values.append('fastest;truck')
+    keys.append('mode')
+    keys.append('app_id')
+    values.append('7FL7O7fEGIJ1XPtoy9Fk')
+    keys.append('app_code')
+    values.append('7KnIQ-A-QX2FULgcERVvqA')
 
-    return str(response)
+    payload = dict(zip(keys, values))
+    r = requests.get('https://wse.api.here.com/2/findsequence.json', params=payload)
+
+    return r.text
