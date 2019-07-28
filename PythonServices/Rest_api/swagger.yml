@@ -459,6 +459,11 @@ paths:
           description: Id to get
           type: integer
           required: True
+        - name: coords
+          in: query
+          description: Id to get
+          type: string
+          required: True
       responses:
         200:
           description: Successfully read

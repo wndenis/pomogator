@@ -1,12 +1,11 @@
 import datetime
-
-import pytz
-import requests
-from constants import *
-import herepy
-import redis
 import logging
 from logging.handlers import RotatingFileHandler
+
+import herepy
+import redis
+import requests
+from constants import *
 
 
 def convert_address_to_coor(address):
@@ -48,8 +47,9 @@ def create_redis():
 def return_path(paths):
     keys = []
     values = []
+    print(paths)
     for i, x in enumerate(paths):
-        print(x)
+        # print(x)
         values.append(','.join(map(str, x)) )
         if i == 0:
             keys.append('start')
@@ -57,20 +57,18 @@ def return_path(paths):
             keys.append('end')
         else:
             keys.append('destination' + str(i))
-    values.append('fastest;truck')
+    values.append('fastest;truck;traffic:enabled')
     keys.append('mode')
     keys.append('app_id')
-    values.append('7FL7O7fEGIJ1XPtoy9Fk')
+    values.append('woAmlARtVRQUq7x2f4UC')
     keys.append('app_code')
-    values.append('7KnIQ-A-QX2FULgcERVvqA')
+    values.append('ziLrOYsoG2qponeZvb2uVw')
     keys.append('maxSpeed')
     values.append('80kph')
-    # print(keys)
-    # print(values)
-    # keys.append('departure')
-    # values.append(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).replace(' ','T')+'+03')
+    keys.append('departure')
+    values.append(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).replace(' ', 'T') + '+03')
 
     payload = dict(zip(keys, values))
     r = requests.get('https://wse.api.here.com/2/findsequence.json', params=payload)
-    print(r.json())
+
     return r.text

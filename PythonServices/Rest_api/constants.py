@@ -1,2 +1,2 @@
-APP_ID = '7FL7O7fEGIJ1XPtoy9Fk'
-APP_CODE = '7KnIQ-A-QX2FULgcERVvqA'
+APP_ID = 'woAmlARtVRQUq7x2f4UC'
+APP_CODE = 'ziLrOYsoG2qponeZvb2uVw'
