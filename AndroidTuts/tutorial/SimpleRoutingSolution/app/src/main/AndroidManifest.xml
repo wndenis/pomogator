@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mapstutorial.simplerouting" >
+    package="com.realitycheck.pomogatorandroidapp" >
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,9 +10,18 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/big_black_clear"
         android:networkSecurityConfig="@xml/network_security_config"
         android:label="@string/app_name">
+        <service
+            android:name="com.here.android.mpa.service.MapService"
+            android:label="Pomogator"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.realitycheck.pomogatorandroidapp">
+                </action>
+            </intent-filter>
+        </service>
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -27,9 +37,20 @@
         </activity>
 
         <meta-data
-            android:name="com.here.android.maps.appid" android:value="N5RjyjghGHtVRHIuaL3T" />
+            android:name="com.here.android.maps.appid" android:value="LIVtX43714vB6loKlvq5" />
         <meta-data
-            android:name="com.here.android.maps.apptoken" android:value="12LnTJREVJpqbdn4LnKWSQ" />
+            android:name="com.here.android.maps.apptoken" android:value="JadRiw48q2S6eJYFUkXpSg" />
+        <meta-data android:name="com.here.android.maps.license.key"
+            android:value="XzhSXqN3V1Ve8Rqp1ZWVg6do6ssa4nJTF+Crmz3t4+SPBRCQIgFuIxF3vEziGEhyGVMW9W7ubI8Qkiik7OMz5lb74PHN0J7QKnduMO9Hrpdu9gJnetpboZq+tanYJQg2RTrqPrxApJPUrs23G0Wzhp9zE6Ixww9LLa/CXLC6xZWJlKQU9HiWQPSxYUJs3PpwxPI5KJBKYs1UgelNnQdZewEGuPLmmIPf2pD5pXEI0WM0UmIx9IgVVPHjypdlB7de//GUrAwTSfcDHTepHl7YP0pHpDl8Ih1klSNkF0rFnYc/W42Lft2rMWkbAggH8lIjoa7AvZIor8FDDxBJpGNKasBvTo4g2KBCk50+KlLhxahd7jAf0Etob28Q1SZQJwQO4er8OjkM7IvQJr0zILP2eazus08PLQGdbKHcFqD2ti8iLOHqwA1Yt6DbBy9poMXsrKaZVzcphhMV8Ke/Z8MIIWyOANpM/msrXqE/t96AX6FHd8WLQqTRc4rz1x48n5WURDS3kNGHcDSApZesW1sYPB0yz5+0pTJ+6sNXL73APDgpW3jYwVmV4hSZpa101Dney9NrJRU6a5/Rk++AZhVh4JOxZbaoeUY4O+Xr3YKs8KzQPO3velOJQ9eBZF4mY83fK68yPW8FyB1vDvAVcaw3tlKZvvTlWoHj44yUqfpFx88="/>
+
+        <!-- HERE Positioning Service definition. -->
+        <service
+            android:name="com.here.services.internal.LocationService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":remote">
+        </service>
+
     </application>
 
 </manifest>

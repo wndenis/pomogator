@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center"
-        android:hint="Логин"
-        android:inputType="textPersonName"
+        android:hint="Идентификатор"
+        android:imeOptions="actionSend"
+        android:inputType="number"
         android:singleLine="true" />
 
     <Button
