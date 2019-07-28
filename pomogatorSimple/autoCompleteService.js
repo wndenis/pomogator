@@ -23,7 +23,8 @@ function autoCompleteListener(textBox, event) {
         'query=' +  encodeURIComponent(textBox.value) +   // The search text which is the basis of the query
         '&beginHighlight=' + encodeURIComponent('<mark>') + //  Mark the beginning of the match in a token. 
         '&endHighlight=' + encodeURIComponent('</mark>') + //  Mark the end of the match in a token. 
-        '&maxresults=5' +  // The upper limit the for number of suggestions to be included 
+        '&gen=9'+
+        '&maxresults=10' +  // The upper limit the for number of suggestions to be included 
                           // in the response.  Default is set to 5.
         '&app_id=' + window.restAppId +
         '&app_code=' + window.restAppCode;
@@ -46,7 +47,6 @@ function onAutoCompleteSuccess() {
   */
   clearOldSuggestions();
   addSuggestionsToPanel(this.response);  // In this context, 'this' means the XMLHttpRequest itself.
-  addSuggestionsToMap(this.response);
 }
 
 
@@ -97,69 +97,6 @@ function openBubble(position, text){
 
 //param {Object} response
 
-function addSuggestionsToMap(response){
-  /**
-   * This function will be called once the Geocoder REST API provides a response
-   * @param  {Object} result          A JSONP object representing the  location(s) found.
-   */
-  var onGeocodeSuccess = function (result) {
-    var marker,
-      locations = result.Response.View[0].Result,
-      i;
-
-      // Add a marker for each location found
-      for (i = 0; i < locations.length; i++) {
-        marker = new H.map.Marker({
-          lat : locations[i].Location.DisplayPosition.Latitude,
-          lng : locations[i].Location.DisplayPosition.Longitude
-        });
-        marker.setData(locations[i].Location.Address.Label);
-        group.addObject(marker);
-      }
-      
-      map.setViewBounds(group.getBounds());
-      if(group.getObjects().length < 2){
-        map.setZoom(15);
-      }
-    },
-    /**
-     * This function will be called if a communication error occurs during the JSON-P request
-     * @param  {Object} error  The error message received.
-     */
-    onGeocodeError = function (error) {
-      alert('Ooops!');
-    },
-     /**
-     * This function uses the geocoder service to calculate and display information
-     * about a location based on its unique `locationId`.
-     *
-     * A full list of available request parameters can be found in the Geocoder API documentation.
-     * see: http://developer.here.com/rest-apis/documentation/geocoder/topics/resource-search.html
-     *
-     * @param {string} locationId    The id assigned to a given location
-     */
-    geocodeByLocationId = function (locationId) {
-      geocodingParameters = {
-        locationId : locationId
-      };
-
-      geocoder.geocode(
-        geocodingParameters,
-        onGeocodeSuccess,
-        onGeocodeError
-      );
-    }
-
-  /* 
-   * Loop through all the geocoding suggestions and make a request to the geocoder service
-   * to find out more information about them.
-   */
-
-  response.suggestions.forEach(function (item, index, array) {
-    geocodeByLocationId(item.locationId);
-  });
-}
-
 /**
  * Removes all H.map.Marker points from the map and adds closes the info bubble
  */
@@ -174,7 +111,15 @@ function clearOldSuggestions(){
   *
   * @param {Object} response
   */
+ var filter = new Array();
  function addSuggestionsToPanel(response){
-    var suggestions = document.getElementById('suggestions');
-    suggestions.innerHTML = JSON.stringify(response, null, ' ');
+    filter = [];
+    document.getElementById('select').innerHTML='';
+    
+    response['suggestions'].forEach(element => {
+        filter.push(element.label);
+        var string = document.createElement('option');
+        string.innerHTML = element.label;
+        document.getElementById('select').appendChild(string);
+    });
  }

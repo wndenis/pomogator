@@ -53,7 +53,7 @@ function addMarkerToGroup(group,behavior,lat, lng, content) {
           ui.addBubble(new H.ui.InfoBubble({
             lat: location.Location.DisplayPosition.Latitude,
             lng: location.Location.DisplayPosition.Longitude
-          }, { content: location.Location.Address.Label }));
+          }, { content: location.Location.Address.Label + `<br><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">OK</button>` }));
         },
         function(e) { alert(e); });
       
@@ -75,7 +75,6 @@ function addMarkerToGroup(group,behavior,lat, lng, content) {
 }
 
 function addMarker(map,lat,lng) {
-
   var group = new H.map.Group();
 
   map.addObject(group);
@@ -96,7 +95,7 @@ function addMarker(map,lat,lng) {
       ui.addBubble(new H.ui.InfoBubble({
         lat: location.Location.DisplayPosition.Latitude,
         lng: location.Location.DisplayPosition.Longitude
-      }, { content: location.Location.Address.Label }));
+      }, { content: location.Location.Address.Label + `<br><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">OK</button>` }));
 
       //addMarkerToGroup(group,behavior,lat, lng, location.Location.Address.Label);
 
@@ -143,11 +142,6 @@ function addMarker(map,lat,lng) {
 
       addMarker(map,coord.lat, coord.lng);
       map.removeEventListener('tap',getCoord);
-
-      console.log('Clicked at ' + Math.abs(coord.lat.toFixed(4)) +
-          ((coord.lat > 0) ? 'N' : 'S') +
-          ' ' + Math.abs(coord.lng.toFixed(4)) +
-          ((coord.lng > 0) ? 'E' : 'W'));
     }
 
     map.addEventListener('tap', getCoord);
@@ -188,3 +182,32 @@ function addMarker(map,lat,lng) {
   window.onload = function () {
     setUpClickListener(map); 
   }
+  function geocode(value) {
+    var geocoder = platform.getGeocodingService(),
+      geocodingParameters = {
+        searchText: value,
+        jsonattributes : 1
+      };
+  
+    geocoder.geocode(
+      geocodingParameters,
+      onSuccess,
+      onError
+    );
+  }
+  /**
+   * This function will be called once the Geocoder REST API provides a response
+   * @param  {Object} result          A JSONP object representing the  location(s) found.
+   *
+   * see: http://developer.here.com/rest-apis/documentation/geocoder/topics/resource-type-response-geocode.html
+   */
+  function onSuccess(result) {
+    var locations = result.response.view[0].result;
+    addMarker(map,locations[0].location.displayPosition.latitude,locations[0].location.displayPosition.longitude);
+
+  }
+
+function onError(error) {
+  alert('Can\'t reach the remote server');
+}                 
+              
