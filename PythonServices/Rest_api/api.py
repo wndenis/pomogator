@@ -61,6 +61,8 @@ def return_path(paths):
     values.append('7FL7O7fEGIJ1XPtoy9Fk')
     keys.append('app_code')
     values.append('7KnIQ-A-QX2FULgcERVvqA')
+    keys.append('maxSpeed')
+    values.append('80kph')
 
     payload = dict(zip(keys, values))
     r = requests.get('https://wse.api.here.com/2/findsequence.json', params=payload)

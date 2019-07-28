@@ -1,6 +1,6 @@
 import os
 from config import db
-from models import Order, OrderPlan
+from models import Order, OrderPlan, Client
 
 if os.path.exists("api.db"):
     os.remove("api.db")
@@ -17,6 +17,12 @@ ORDER_PLAN = [
     }
 ]
 
+CLIENTS = [
+    {
+        'orders': '[[52.52282, 13.37011], [52.50341, 13.44429]]'
+    }
+]
+
 db.create_all()
 
 for order in ORDERS:
@@ -25,6 +31,10 @@ for order in ORDERS:
 
 for order in ORDER_PLAN:
     o = OrderPlan(paths=order.get("paths"))
+    db.session.add(o)
+
+for order in CLIENTS:
+    o = Client(orders=order.get("orders"))
     db.session.add(o)
 
 db.session.commit()

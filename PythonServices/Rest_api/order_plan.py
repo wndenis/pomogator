@@ -79,7 +79,6 @@ def update(order_plan_id, order_plan):
             .one_or_none()
     )
 
-    # Are we trying to find a person that does not exist?
     if update_order_plan is None:
         abort(
             404
@@ -92,15 +91,13 @@ def update(order_plan_id, order_plan):
             409
         )
 
-    # Otherwise go ahead and update!
     else:
 
         schema = OrderPlanSchema()
         update = schema.load(order_plan, session=db.session).data
 
-        update.order_id = update_order_plan.order_id
+        update.order_plan_id = update_order_plan.order_plan_id
 
-        # merge the new object into the old and commit it to the db
         db.session.merge(update)
         db.session.commit()
 

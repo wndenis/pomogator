@@ -27,3 +27,12 @@ class OrderPlanSchema(ma.ModelSchema):
         model = OrderPlan
         sqla_session = db.session
 
+class Client(db.Model):
+    __tablename__ = "client"
+    client_id = db.Column(db.Integer, primary_key=True)
+    orders = db.Column(db.String)
+
+class ClientSchema(ma.ModelSchema):
+    class Meta:
+        model = Client
+        sqla_session = db.session

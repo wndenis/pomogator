@@ -235,7 +235,7 @@ paths:
           description: Id to update
           type: integer
           required: True
-        - name: order
+        - name: order_plan
           in: body
           schema:
             type: object
@@ -288,3 +288,117 @@ paths:
               path:
                 type: array
                 description: path
+
+  /client:
+    get:
+      operationId: client.read_all
+      tags:
+        - client
+      responses:
+        200:
+          description: Successfully
+          schema:
+            type: array
+            items:
+              properties:
+                client_id:
+                  type: string
+                  description: Id
+                orders:
+                  type: string
+                  description: orders
+
+    post:
+      operationId: client.create
+      tags:
+        - client
+      parameters:
+        - name: client
+          in: body
+          description: Order to create
+          required: True
+          schema:
+            type: object
+            properties:
+              orders:
+                type: string
+                description: orders
+      responses:
+        201:
+          description: Successfully created
+          schema:
+            properties:
+              client_id:
+                type: string
+                description: Id
+              orders:
+                type: string
+                description: orders
+  /client/{client_id}:
+    get:
+      operationId: client.read_one
+      tags:
+        - client
+      parameters:
+        - name: client_id
+          in: path
+          description: Id to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read
+          schema:
+            type: object
+            properties:
+              client_id:
+                type: string
+                description: Id
+              orders:
+                type: string
+                description: paths
+
+
+    put:
+      operationId: client.update
+      tags:
+        - client
+      parameters:
+        - name: client_id
+          in: path
+          description: Id to update
+          type: integer
+          required: True
+        - name: client
+          in: body
+          schema:
+            type: object
+            properties:
+              orders:
+                type: string
+                description: path
+      responses:
+        200:
+          description: Successfully updated
+          schema:
+            properties:
+              client_id:
+                type: string
+                description: Id in the database
+              orders:
+                type: string
+                description: paths
+
+    delete:
+      operationId: client.delete
+      tags:
+        - client
+      parameters:
+        - name: client_id
+          in: path
+          type: integer
+          description: Id
+          required: true
+      responses:
+        200:
+          description: Successfully deleted
