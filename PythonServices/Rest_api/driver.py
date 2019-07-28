@@ -2,7 +2,7 @@ import json
 
 from flask import make_response, abort
 from config import db
-from models import Driver, DriverSchema, OrderPlan, OrderPlanSchema
+from models import Driver, DriverSchema, OrderPlan, OrderPlanSchema, Order, OrderSchema
 from api import return_path
 from ast import literal_eval
 
@@ -16,25 +16,48 @@ def read_all():
     return data
 
 
+# def read_one(driver_id, lat, lng):
+# 
+#     order = Driver.query.filter(Driver.driver_id == driver_id).one_or_none()
+# 
+#     if order is not None:
+# 
+#         search_for_path = OrderPlan.query.filter(OrderPlan.order_plan_id == (order).order_plan
+#                                                  ).one_or_none()
+# 
+#         if search_for_path is not None:
+#             order_plan_schema = OrderPlanSchema()
+#             data = order_plan_schema.dump(search_for_path).data
+#             data = literal_eval(data['paths'])
+#             coords = [float(lat), float(lng)]
+#             # coords = literal_eval(coords)
+#             data.insert(0, coords)
+#             data.append(coords)
+#             data = return_path(data)
+#             return json.loads(data)
+#     else:
+#         abort(
+#             404
+#         )'
+
 def read_one(driver_id, lat, lng):
 
     order = Driver.query.filter(Driver.driver_id == driver_id).one_or_none()
 
     if order is not None:
-
-        search_for_path = OrderPlan.query.filter(OrderPlan.order_plan_id == (order).order_plan
-                                                 ).one_or_none()
-
-        if search_for_path is not None:
-            order_plan_schema = OrderPlanSchema()
-            data = order_plan_schema.dump(search_for_path).data
-            data = literal_eval(data['paths'])
-            coords = [float(lat), float(lng)]
-            # coords = literal_eval(coords)
-            data.insert(0, coords)
-            data.append(coords)
-            data = return_path(data)
-            return json.loads(data)
+        orders = Order.query.all()
+        order_schema = OrderSchema(many=True)
+        data = order_schema.dump(orders).data
+        # data = literal_eval(data[0])
+        path = []
+        for i in data:
+            path.append([float(i['latitude']), float(i['longitude'])])
+        coords = [float(lat), float(lng)]
+        # # coords = literal_eval(coords)
+        path.insert(0, coords)
+        path.append(coords)
+        data = return_path(path)
+        return json.loads(data)
     else:
         abort(
             404
