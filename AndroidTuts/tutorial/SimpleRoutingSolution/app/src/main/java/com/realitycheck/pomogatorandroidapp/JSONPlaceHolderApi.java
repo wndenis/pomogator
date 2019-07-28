@@ -10,15 +10,15 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface JSONPlaceHolderApi {
-    @GET("/driver/{driver_id}")
-    public Call<Post> getPlan(@Path("driver_id") int id);
+    @GET("/api/driver/{driver_id}?")
+    public Call<Post> getPlan(@Path("driver_id") int id, @Query("lat") double lat, @Query("lng")double lng);
 
-    @GET("/posts")
+    @GET("/api/posts")
     public Call<List<Post>> getAllPosts();
 
-    @GET("/posts")
+    @GET("/api/posts")
     public Call<List<Post>> getPostOfUser(@Query("userId") int id);
 
-    @POST("/posts")
+    @POST("/api/posts")
     public Call<Post> postData(@Body Post data);
 }

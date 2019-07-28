@@ -8,7 +8,7 @@ public class Waypoint {
 
     @SerializedName("estimatedArrival")
     @Expose
-    private Object estimatedArrival;
+    private String estimatedArrival;
     @SerializedName("estimatedDeparture")
     @Expose
     private Object estimatedDeparture;
@@ -28,11 +28,11 @@ public class Waypoint {
     @Expose
     private Integer sequence;
 
-    public Object getEstimatedArrival() {
+    public String getEstimatedArrival() {
         return estimatedArrival;
     }
 
-    public void setEstimatedArrival(Object estimatedArrival) {
+    public void setEstimatedArrival(String estimatedArrival) {
         this.estimatedArrival = estimatedArrival;
     }
 

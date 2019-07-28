@@ -37,11 +37,11 @@
         </activity>
 
         <meta-data
-            android:name="com.here.android.maps.appid" android:value="LIVtX43714vB6loKlvq5" />
+            android:name="com.here.android.maps.appid" android:value="a29rmuw2wJhODmpD8zmG" />
         <meta-data
-            android:name="com.here.android.maps.apptoken" android:value="JadRiw48q2S6eJYFUkXpSg" />
+            android:name="com.here.android.maps.apptoken" android:value="iNxrdX9vji5wMktmgl7aLA" />
         <meta-data android:name="com.here.android.maps.license.key"
-            android:value="XzhSXqN3V1Ve8Rqp1ZWVg6do6ssa4nJTF+Crmz3t4+SPBRCQIgFuIxF3vEziGEhyGVMW9W7ubI8Qkiik7OMz5lb74PHN0J7QKnduMO9Hrpdu9gJnetpboZq+tanYJQg2RTrqPrxApJPUrs23G0Wzhp9zE6Ixww9LLa/CXLC6xZWJlKQU9HiWQPSxYUJs3PpwxPI5KJBKYs1UgelNnQdZewEGuPLmmIPf2pD5pXEI0WM0UmIx9IgVVPHjypdlB7de//GUrAwTSfcDHTepHl7YP0pHpDl8Ih1klSNkF0rFnYc/W42Lft2rMWkbAggH8lIjoa7AvZIor8FDDxBJpGNKasBvTo4g2KBCk50+KlLhxahd7jAf0Etob28Q1SZQJwQO4er8OjkM7IvQJr0zILP2eazus08PLQGdbKHcFqD2ti8iLOHqwA1Yt6DbBy9poMXsrKaZVzcphhMV8Ke/Z8MIIWyOANpM/msrXqE/t96AX6FHd8WLQqTRc4rz1x48n5WURDS3kNGHcDSApZesW1sYPB0yz5+0pTJ+6sNXL73APDgpW3jYwVmV4hSZpa101Dney9NrJRU6a5/Rk++AZhVh4JOxZbaoeUY4O+Xr3YKs8KzQPO3velOJQ9eBZF4mY83fK68yPW8FyB1vDvAVcaw3tlKZvvTlWoHj44yUqfpFx88="/>
+            android:value="GodB3AwXbeR4roBmgk7ZAmZrHn/zWiZ23pgR0LmrWM/cwrGFK34xcURUVTaNWPpHDGVSgxz7ZzJvVPy8lA21IBWzzfbxD1XJ+GQ/JMgV1/b5ux8nd4hJcN1X4q1b4HIAhLhexqtIu63FPOlYYvc8ioRocTvpyp1eGDxmBQmGJIWOmtTaVRWaLKC/QTeTQC2i1hF2jqGS34TM86BcsFjJZig7x9FniKtLJ7a6NzTOZfvfztekRVB1qv0/pnR+jjxai8A79Rkr2qG2tDgANyYzMTgQsfkQE5GaWoyO9D72DSdhHgcSQJ/1Yw26EUKLnyG+Wwq6SF4KHhxnc0Pt1o/h6mgHhFzJPVsPn9SXwaeqe9zjTwF5RGgg8dYriaqea1s6f4Ta4X5CsIejZrBbBDnAOMrudbp6+H5yu0sjwPwsh9gORKwyKfbuAwZxit1v47/Stp/wVsyB3Es+LKZFfeNIGgWWtwBFRarHVnKnZ9UCemOpzYDUJK8qk2GJnq7e/q3mcrnKJFojmrjIPoY/czYP2vg/CffAJBPAwK06hQYiqGQstSEqeYmtb8vpqtvJpU8OZPRqlvtm+99a3EfQx4SuWJZ9Gq2hUaUlC+0/XcEiFkn5sxyqYNaDZ7XjVr9IpJoUTDZVXNtTL+imtAdxQSP6gCcFoGEu4lfJwQ5RNfl6EOI="/>
 
         <!-- HERE Positioning Service definition. -->
         <service

@@ -14,6 +14,7 @@ import retrofit2.Response;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.here.android.mpa.common.GeoBoundingBox;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.GeoPosition;
 import com.here.android.mpa.common.OnEngineInitListener;
@@ -37,6 +39,13 @@ import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.SupportMapFragment;
 import com.here.android.mpa.mapping.MapRoute;
+import com.here.android.mpa.routing.CoreRouter;
+import com.here.android.mpa.routing.Route;
+import com.here.android.mpa.routing.RouteOptions;
+import com.here.android.mpa.routing.RoutePlan;
+import com.here.android.mpa.routing.RouteResult;
+import com.here.android.mpa.routing.RouteWaypoint;
+import com.here.android.mpa.routing.RoutingError;
 import com.realitycheck.pomogatorandroidapp.R;
 
 
@@ -129,7 +138,7 @@ public class RoutingActivity extends FragmentActivity {
                         map = mapFragment.getMap();
                         map.setMapScheme(Map.Scheme.CARNAV_TRAFFIC_DAY);
                         // Set the zoom level to the average between min and max
-                        map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 3);
+                        map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.3);
                         map.setCenter(new GeoCoordinate(55.751116, 37.618991), Map.Animation.NONE);
 
                         posManager = PositioningManager.getInstance();
@@ -186,7 +195,8 @@ public class RoutingActivity extends FragmentActivity {
     // Functionality for taps of the "Get Directions" button
     public void getDirections(View view) {
         view.setVisibility(View.GONE);
-        startLoop();
+        map.setZoomLevel(map.getMaxZoomLevel());
+        map.setTilt(35, Map.);
     }
 
     public void Logout(MenuItem item){
@@ -232,17 +242,55 @@ public class RoutingActivity extends FragmentActivity {
         @Override
         public void run() {
             if(started) {
-                Log.i("CYCLE", "CYCLING");
 
-
+                if (currentPosition == null){
+                    startLoop();
+                    return;
+                }
                 //        map.addMapObject()
                 NetworkService.getInstance()
                         .getJSONApi()
-                        .getPlan(login)
+//                        .getPlan(login, currentPosition.getCoordinate().getLatitude() + 0.1, currentPosition.getCoordinate().getLongitude() + 0.1)
+                        .getPlan(login, 55.8407938, 37.8090099)
                         .enqueue(new Callback<Post>() {
                             @Override
                             public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
                                 Post post = response.body();
+
+                                RouteOptions routeOptions = new RouteOptions();
+                                routeOptions.setTransportMode(RouteOptions.TransportMode.TRUCK);
+                                routeOptions.setRouteType(RouteOptions.Type.FASTEST);
+
+                                if (map != null && mapRoute != null) {
+                                    map.removeMapObject(mapRoute);
+                                    mapRoute = null;
+                                }
+
+                                CoreRouter router = new CoreRouter();
+                                RoutePlan routePlan = new RoutePlan();
+                                routePlan.setRouteOptions(routeOptions);
+
+                                if (post == null){
+                                    Log.i("OOOOOOOOOOOOOOOOOOPS", "!!!!");
+                                    startLoop();
+                                    return;
+                                }
+
+                                if (post.getResults() == null){
+                                    Log.i("NO", "RESULT");
+                                    startLoop();
+                                    return;
+                                }
+
+                                for (Waypoint w:post.getResults().get(1).getWaypoints()) {
+                                    routePlan.addWaypoint(new RouteWaypoint(new GeoCoordinate(w.getLat(), w.getLng())));
+                                }
+                                Log.i("ROUTE", "NICE");
+
+                                mapRoute.setTrafficEnabled(true);
+                                map.addMapObject(new MapRoute());
+                                router.calculateRoute(routePlan, new RouteListener());
+                                startLoop();
 
 //                        textView.append(post.getId() + "\n");
 //                        textView.append(post.getUserId() + "\n");
@@ -252,49 +300,35 @@ public class RoutingActivity extends FragmentActivity {
 
                             @Override
                             public void onFailure(@NonNull Call<Post> call, @NonNull Throwable t) {
-                                textViewResult.setText("ERROR");
 //                        textView.append("Error occurred while getting request!");
                                 t.printStackTrace();
+                                startLoop();
                             }
                         });
-
-                // 1. clear previous results
-//        textViewResult.setText("");
-//        if (map != null && mapRoute != null) {
-//            map.removeMapObject(mapRoute);
-//            mapRoute = null;
-//        }
-//
-//        // 2. Initialize RouteManager
-//        RouteManager routeManager = new RouteManager();
-//
-//        // 3. Select routing options
-//        RoutePlan routePlan = new RoutePlan();
-//
-//        RouteOptions routeOptions = new RouteOptions();
-//        routeOptions.setTransportMode(RouteOptions.TransportMode.CAR);
-//        routeOptions.setRouteType(RouteOptions.Type.FASTEST);
-//        routePlan.setRouteOptions(routeOptions);
-//
-//        // 4. Select Waypoints for your routes
-//        // START: Nokia, Burnaby
-//        routePlan.addWaypoint(new GeoCoordinate(49.1966286, -123.0053635));
-//
-//        // END: Airport, YVR
-//        routePlan.addWaypoint(new GeoCoordinate(49.1947289, -123.1762924));
-//
-//        // 5. Retrieve Routing information via RouteManagerEventListener
-//        RouteManager.Error error = routeManager.calculateRoute(routePlan, routeManagerListener);
-//        if (error != RouteManager.Error.NONE) {
-//            Toast.makeText(getApplicationContext(),
-//                    "Route calculation failed with: " + error.toString(), Toast.LENGTH_SHORT)
-//                    .show();
-//        }
-
-                startLoop();
             }
         }
     };
+
+    private class RouteListener implements CoreRouter.Listener {
+
+        // Method defined in Listener
+        public void onProgress(int percentage) {
+            // Display a message indicating calculation progress
+        }
+
+        // Method defined in Listener
+        public void onCalculateRouteFinished(List<RouteResult> routeResult, RoutingError error) {
+            // If the route was calculated successfully
+            if (error == RoutingError.NONE) {
+                // Render the route on the map
+                mapRoute = new MapRoute(routeResult.get(0).getRoute());
+                map.addMapObject(mapRoute);
+            }
+            else {
+                // Display a message indicating route calculation failure
+            }
+        }
+    }
 
     public void stopLoop() {
         started = false;
@@ -303,6 +337,6 @@ public class RoutingActivity extends FragmentActivity {
 
     public void startLoop() {
         started = true;
-        loop.postDelayed(runnable, 750);
+        loop.postDelayed(runnable, 5000);
     }
 }
