@@ -402,3 +402,74 @@ paths:
       responses:
         200:
           description: Successfully deleted
+
+  /driver:
+    get:
+      operationId: driver.read_all
+      tags:
+        - driver
+      responses:
+        200:
+          description: Successfully
+          schema:
+            type: array
+            items:
+              properties:
+                driver_id:
+                  type: string
+                  description: Id
+                order_plan:
+                  type: string
+                  description: order_plan
+
+    post:
+      operationId: driver.create
+      tags:
+        - driver
+      parameters:
+        - name: order_plan
+          in: body
+          description: Order to create
+          required: True
+          schema:
+            type: object
+            properties:
+              order_plan:
+                type: string
+                description: order_plan
+      responses:
+        201:
+          description: Successfully created
+          schema:
+            properties:
+              driver_id:
+                type: string
+                description: Id
+              order_plan:
+                type: string
+                description: paths
+  /driver/{driver_id}:
+    get:
+      operationId: driver.read_one
+      tags:
+        - driver
+      parameters:
+        - name: driver_id
+          in: path
+          description: Id to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read
+          schema:
+            type: object
+            properties:
+              order_plan_id:
+                type: string
+                description: Id
+              order_plan:
+                type: array
+                description: order_plan
+
+

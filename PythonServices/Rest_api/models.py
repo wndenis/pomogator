@@ -36,3 +36,13 @@ class ClientSchema(ma.ModelSchema):
     class Meta:
         model = Client
         sqla_session = db.session
+
+class Driver(db.Model):
+    __tablename__ = "driver"
+    driver_id = db.Column(db.Integer, primary_key=True)
+    order_plan = db.Column(db.String)
+
+class DriverSchema(ma.ModelSchema):
+    class Meta:
+        model = Driver
+        sqla_session = db.session

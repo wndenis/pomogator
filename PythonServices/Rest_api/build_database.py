@@ -1,6 +1,6 @@
 import os
 from config import db
-from models import Order, OrderPlan, Client
+from models import Order, OrderPlan, Client, Driver
 
 if os.path.exists("api.db"):
     os.remove("api.db")
@@ -22,6 +22,11 @@ CLIENTS = [
         'orders': '[[52.52282, 13.37011], [52.50341, 13.44429]]'
     }
 ]
+DRIVERS = [
+    {
+        'order_plan': '1'
+    }
+]
 
 db.create_all()
 
@@ -35,6 +40,10 @@ for order in ORDER_PLAN:
 
 for order in CLIENTS:
     o = Client(orders=order.get("orders"))
+    db.session.add(o)
+
+for order in DRIVERS:
+    o = Driver(order_plan=order.get("order_plan"))
     db.session.add(o)
 
 db.session.commit()
