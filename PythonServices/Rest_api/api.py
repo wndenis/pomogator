@@ -48,17 +48,16 @@ def create_redis():
 def return_path(paths):
     keys = []
     values = []
-    print(paths[0])
     for i, x in enumerate(paths):
         print(x)
         values.append(','.join(map(str, x)) )
         if i == 0:
             keys.append('start')
-        elif i == len(values) - 1:
+        elif i == len(paths) - 1:
             keys.append('end')
         else:
             keys.append('destination' + str(i))
-    values.append('fastest;truck;traffic:enabled')
+    values.append('fastest;truck')
     keys.append('mode')
     keys.append('app_id')
     values.append('7FL7O7fEGIJ1XPtoy9Fk')
@@ -66,10 +65,12 @@ def return_path(paths):
     values.append('7KnIQ-A-QX2FULgcERVvqA')
     keys.append('maxSpeed')
     values.append('80kph')
-    keys.append('departure')
-    values.append(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).replace(' ','T')+'+03')
+    # print(keys)
+    # print(values)
+    # keys.append('departure')
+    # values.append(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).replace(' ','T')+'+03')
 
     payload = dict(zip(keys, values))
     r = requests.get('https://wse.api.here.com/2/findsequence.json', params=payload)
-
+    print(r.json())
     return r.text
