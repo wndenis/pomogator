@@ -226,24 +226,23 @@ function onError(error) {
 function sendMarkerDataToBack(){
   console.log(coordinates);
   var link = "http://10.30.21.152:5000/api"
-  var xhr = new XMLHttpRequest();
 
-  var json = JSON.stringify({
+  var json = {
   "latitude": coordinates.lat,
   "longitude": coordinates.lng
+  };
+
+  axios({
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    url: `${link}/order`,
+    data: json
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
   });
-
-  xhr.open("POST", `${link}/order`, true)
-  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-
-  xhr.onreadystatechange = function () {
-    if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        console.log(xhr.responseText);
-    };
-};
-
-  // Отсылаем объект в формате JSON и с Content-Type application/json
-  // Сервер должен уметь такой Content-Type принимать и раскодировать
-  xhr.send(json);
 }
               
