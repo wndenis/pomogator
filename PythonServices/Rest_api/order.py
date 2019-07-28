@@ -7,7 +7,6 @@ def read_all():
 
     orders = Order.query.all()
 
-    # Serialize the data for the response
     order_schema = OrderSchema(many=True)
     data = order_schema.dump(orders).data
     return data
@@ -41,10 +40,8 @@ def create(order):
         .one_or_none()
     )
 
-    # Can we insert this person?
     if existing_order is None:
 
-        # Create a person instance using the schema and the passed in person
         schema = OrderSchema()
         new_order = schema.load(order, session=db.session).data
 
@@ -52,12 +49,10 @@ def create(order):
         db.session.add(new_order)
         db.session.commit()
 
-        # Serialize and return the newly created person in the response
         data = schema.dump(new_order).data
 
         return data, 201
 
-    # Otherwise, nope, person exists already
     else:
         abort(
             409
@@ -79,7 +74,6 @@ def update(order_id, order):
         .one_or_none()
     )
 
-    # Are we trying to find a person that does not exist?
     if update_order is None:
         abort(
             404
@@ -92,7 +86,6 @@ def update(order_id, order):
             409
         )
 
-    # Otherwise go ahead and update!
     else:
 
         schema = OrderSchema()
@@ -104,7 +97,6 @@ def update(order_id, order):
         db.session.merge(update)
         db.session.commit()
 
-        # return updated person in the response
         data = schema.dump(update_order).data
 
         return data, 200
@@ -114,16 +106,15 @@ def delete(order_id):
 
     order = Order.query.filter(Order.order_id == order_id).one_or_none()
 
-    # Did we find a person?
     if order is not None:
         db.session.delete(order)
         db.session.commit()
         return make_response(
-            "Order {order_id} deleted".format(person_id=order_id), 200
+            "Order {order_id} deleted".format(order_id=order_id), 200
         )
 
     else:
         abort(
             404,
-            "Person not found for Id: {order_id}".format(person_id=order_id),
+            "Person not found for Id: {order_id}".format(order_id=order_id),
         )

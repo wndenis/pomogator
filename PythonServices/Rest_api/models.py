@@ -12,8 +12,18 @@ class Order(db.Model):
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
 
+class OrderPlan(db.Model):
+    __tablename__ = "order_plan"
+    order_plan_id = db.Column(db.Integer, primary_key=True)
+    paths = db.Column(db.String)
 
 class OrderSchema(ma.ModelSchema):
     class Meta:
         model = Order
         sqla_session = db.session
+
+class OrderPlanSchema(ma.ModelSchema):
+    class Meta:
+        model = OrderPlan
+        sqla_session = db.session
+

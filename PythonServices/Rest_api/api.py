@@ -21,7 +21,6 @@ def update_path():
 
 
 def create_clients():
-    logger.info('Client created')
     return herepy.RoutingApi(APP_ID, APP_CODE)
 
 
@@ -43,20 +42,11 @@ def init_logger(logger_name, max_volume_of_log_file_megabytes=100):
 def create_redis():
     return redis.Redis(host='localhost', port=6379, socket_timeout=5, socket_connect_timeout=5)
 
-logger = init_logger('here_api_logger')
+def return_path(route):
+    routingApi = create_clients()
+    response = routingApi.truck_route(route[0],
+                                      route[1],
+                                      [herepy.RouteMode.truck, herepy.RouteMode.fastest,
+                                       herepy.RouteMode.traffic_default])
 
-if __name__ == "__main__":
-    try:
-        while True:
-            routingApi = create_clients()
-            r = create_redis()
-            client_path = update_path()
-            response = routingApi.truck_route(client_path[0],
-                                              client_path[1],
-                                              [herepy.RouteMode.truck, herepy.RouteMode.fastest, herepy.RouteMode.traffic_default])
-            print(response)
-    except KeyboardInterrupt:
-        logger.exception('Keyboard interrupt!')
-        exit(0)
-    finally:
-        logger.debug('Clean up')
+    return str(response)
